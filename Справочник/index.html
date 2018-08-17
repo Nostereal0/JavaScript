@@ -2,23 +2,22 @@
 <html>
 <head>
 	<title>Справочник</title>
-	<meta charset="utf-8">
+    <meta charset="utf-8">
+    <!-- <link rel="stylesheet" href="style.css"> -->
     <script type="text/javascript" src="jquery-3.3.1.min.js"></script>
-    <script type="text/javascript" src="jquery.cookie.js"></script>
     <script type="module" src="main.js"></script>
 </head>
 <body>
-    <label for="first_name">Имя</label>
-    <input id ="first_name" type="text">
-    <label for="first_surname">Фамилия</label>
-    <input id ="first_surname" type="text"> 
+    <label for="name">ФИО</label>
+    <input id ="name" type="text">
     <label for="phone_number">Номер телефона</label>
-    <input id ="phone_number" type="text"> 
-    <label for="address">Адрес</label>
-    <input id ="address" type="text">
-    <input type="button" id="add_btn" value="Add">
-    <input type="button" id="edit_btn" value="Edit">    
-    
+    <input id ="phone_number" type="text">
+    <input type="button" id="add_btn" value="Add">    
+    <input type="button" id="clear" value="Clear All">
+    <label for="search">Поиск</label>
+    <input type="text" id="search">
+    <input type="button" id="search_btn" value="Search">
+
     <div id="list">
 
     </div>

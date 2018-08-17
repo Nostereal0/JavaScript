@@ -1,52 +1,92 @@
 let i = 0;
 
-$(window).on("unload", function() {
-    alert("call");
-	console.log("this will be triggered");
+let addBtn = document.getElementById("add_btn");
+let clearBtn = document.getElementById("clear");
+let searchBtn = document.getElementById("search_btn");
 
-	for (let q = 0; q < i; q++) {
-		localStorage.setItem("contact" + q, $("#contact" + q).text());
+
+searchBtn.addEventListener("click", search);
+addBtn.addEventListener("click", addFunc);
+clearBtn.addEventListener("click", clearLS);
+
+$(document).ready(function() {
+	for (let k = 0; k < 1000; k++) {
+		try {
+			let data = JSON.parse(localStorage.getItem("contact" + k));
+			$("<p id=\"contact" + data.id + "\">ФИО: " + data.name + " |  Номер: " + data.phone + "</p>").appendTo("#list");
+		} catch (e) {
+			break;
+		}
 	}
-	
-	
 });
 
-let addBtn = document.getElementById("add_btn");
-
-
-addBtn.addEventListener("click", addFunc);
-
 function addFunc() {
-	let firstName = $("#first_name").val();
-	let firstSurname = $("#first_surname").val();
+	let firstName = $("#name").val();
 	let phoneNumb = $("#phone_number").val();
-	let address = $("#address").val();
 	
 
-	if (firstName != "" && firstSurname != "" && phoneNumb != "" && address != "") {
-		$("<p id=\"contact" + i++ + "\">Имя: " + firstName + " |  Фамилия: " + firstSurname + " |  Номер: " + phoneNumb + " |  Адрес: " + address + "</p>").appendTo("#list");
-		$('<input type="button" id="btn' + (i-1) + '" value="Remove">').appendTo("#contact" + (i-1));
-		$("#btn" + (i-1)).css("margin-left", "20px");
-		
-		for (let k = 0; k < i; k++) {
-			$("#btn" + k).click(function() {
-				$("#contact" + k).remove();
-			});
+	if (firstName != "" && phoneNumb != "") {
+		let userData = {
+			name: firstName,
+			phone: phoneNumb,
+			id: i
+		};
+				
+		let serial = JSON.stringify(userData); //сериализация объекта
+		try {
+			localStorage.setItem("contact" + i, serial);
+		} catch (e) {
+			if (e == QUOTA_EXCEEDED_ERR) {
+				alert("Превышен лимит контактов!");
+			}
 		}
+		let returnObj = JSON.parse(localStorage.getItem("contact" + i));
+		console.log(returnObj);
+		$("<p id=\"contact" + i + "\">ФИО: " + returnObj.name + " |  Номер: " + returnObj.phone + "</p>").appendTo("#list");
+		i += 1;
 
-		
+
+		// clear input fields
+		$("#name").val("");
+		$("#phone_number").val("");
 	}
 	else {alert("Something is empty! Check all fields");}
 }
 
-// function cookieFromCheckbox()
-// 	{
-// 		var ch = [];
-// 		$("input:checkbox").each(function(){
-// 			var $el = $(this);
-// 			if($el.prop("checked"))
-// 			ch.push($el.attr("id"));
-// 		});
 
-// 		$.cookie("checkboxCookie", ch.join(','));
-// 	}
+function clearLS() {
+	localStorage.clear();
+	$("#list").empty();
+	alert("Contacts were cleared!");
+}
+
+function search() {
+	let searchInfo = $("#search").val();
+
+	if (searchInfo !== "") {
+		
+		for (let k = 0; k < 1000; k++) {
+			try {
+				let data = JSON.parse(localStorage.getItem("contact" + k));
+
+				if (!data.name.includes(searchInfo) && !data.phone.includes(searchInfo)) {
+					$("#contact" + k).hide();
+				}
+			} catch (e) {
+				break;
+			}
+		}
+
+
+	} else {
+
+		for (let k = 0; k < 1000; k++) {
+			try {
+				let data = JSON.parse(localStorage.getItem("contact" + k));
+				$("#contact" + k).show();				
+			} catch (e) {
+				break;
+			}
+		}
+	}
+}
