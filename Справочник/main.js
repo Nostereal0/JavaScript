@@ -2,10 +2,12 @@ let i = 0;
 
 let addBtn = document.getElementById("add_btn");
 let clearBtn = document.getElementById("clear");
-let searchBtn = document.getElementById("search_btn");
+//let searchBtn = document.getElementById("search_btn");
+let searchField = document.getElementById("search");
 
 
-searchBtn.addEventListener("click", search);
+//searchBtn.addEventListener("click", search);
+searchField.addEventListener("keyup", search);
 addBtn.addEventListener("click", addFunc);
 clearBtn.addEventListener("click", clearLS);
 
@@ -63,30 +65,19 @@ function clearLS() {
 function search() {
 	let searchInfo = $("#search").val();
 
-	if (searchInfo !== "") {
+	
 		
-		for (let k = 0; k < 1000; k++) {
-			try {
-				let data = JSON.parse(localStorage.getItem("contact" + k));
+	for (let k = 0; k < 1000; k++) {
+		try {
+			let data = JSON.parse(localStorage.getItem("contact" + k));
 
-				if (!data.name.includes(searchInfo) && !data.phone.includes(searchInfo)) {
-					$("#contact" + k).hide();
-				}
-			} catch (e) {
-				break;
+			if (!data.name.includes(searchInfo) && !data.phone.includes(searchInfo)) {
+				$("#contact" + k).hide();
+			} else {
+				$("#contact" + k).show();	
 			}
-		}
-
-
-	} else {
-
-		for (let k = 0; k < 1000; k++) {
-			try {
-				let data = JSON.parse(localStorage.getItem("contact" + k));
-				$("#contact" + k).show();				
-			} catch (e) {
-				break;
-			}
+		} catch (e) {
+			break;
 		}
 	}
-}
+} 
